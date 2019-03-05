@@ -30,7 +30,7 @@
 
 cra_mv <- hBayesDM_model(
   task_name       = "cra",
-  model_name      = "mvf",
+  model_name      = "mv",
   data_columns    = c("subjID", "prob", "ambig", "reward_var", "reward_fix", "choice"),
   parameters      = list("rho" = c(-Inf, 0, Inf),
                          "beta"  = c(-Inf, 0, Inf),
