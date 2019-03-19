@@ -78,9 +78,9 @@ transformed parameters {
 
   for (i in 1:N) {
     beta[i] = Phi_approx(mu_pr[2] + sigma[2] * beta_pr[i]);
-    tau[i]  = Phi_approx(mu_pr[4] + sigma[4] * tau_pr[i]) * (minRT[i] -0.001 - RTbound) + RTbound;
+    tau[i]  = Phi_approx(mu_pr[4] + sigma[4] * tau_pr[i]) * (minRT[i] - RTbound) + RTbound;
     jump[i]  = Phi_approx(mu_pr[7] + sigma[7] * jump_pr[i]);
-    tau2[i]  = Phi_approx(mu_pr[9] + sigma[9] * tau2_pr[i]) * (minCT[i] -0.001 - RTbound) + RTbound; // to avoid wiener complaints
+    tau2[i]  = Phi_approx(mu_pr[9] + sigma[9] * tau2_pr[i]) * (minCT[i] - RTbound) + RTbound;
   }
   alpha = exp(mu_pr[1] + sigma[1] * alpha_pr);
   delta = exp(mu_pr[3] + sigma[3] * delta_pr);
