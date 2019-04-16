@@ -25,16 +25,17 @@ riggedDeck_kalmanf <- hBayesDM_model(
   task_name       = "riggedDeck",
   model_name      = "kalman_filter",  <-------------------  CHANGE
   data_columns    = c("subjid", "cue", "choice", "outcome"),
-  parameters      = list("lambda" = c(0, 0.9, 1),
-                         "theta"  = c(0, 50, 100),
-                         "beta"   = c(0, 0.1, 1),
-                         "mu0"    = c(0, 85, 100),
-                         "sigma0" = c(0, 6, 15),
-                         "sigmaD" = c(0, 3, 15)),
+  parameters      = list("sigma0" = c(0, .1, .15),
+                         "sigmaO" = c(0, .1, .15),
+                         "sigmaE" = c(0, .1, .15),
+                         "wK"     = c(0, 1, inf),
+                         "w0"     = c(0, 1, 270),
+                         "wU"     = c(0, .5, 1)),
   regressors      = list("winp_mean" = 2,
                          "winp_var"  = 2,
-                         "rpe"       = 2,
-                         "decay"     = 2),
+                         "weight"    = 2,
+                         "gain"      = 2,
+                         "rpe"       = 2),
   preprocess_func = function(raw_data, general_info) {
     subjs   <- general_info$subjs
     n_subj  <- general_info$n_subj
