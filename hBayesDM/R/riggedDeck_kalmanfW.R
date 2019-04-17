@@ -1,10 +1,11 @@
-#' @templateVar MODEL_FUNCTION beta
+#' @templateVar MODEL_FUNCTION kalmanfW
 #' @templateVar CONTRIBUTOR Mario Martinez-Saito
-#' @templateVar TASK_NAME Rigged card deck
-#' @templateVar MODEL_NAME Bayesian Beta learner  
+#' @templateVar TASK_NAME Rigged deck game
+#' @templateVar MODEL_NAME Weighted Kalman filter
+#' @templateVar MODEL_CITE (Daw et al., 2006, Nature)
 #' @templateVar MODEL_TYPE Hierarchical
 #' @templateVar DATA_COLUMNS "subjID", "cue", "choice", "outcome"
-#' @templateVar PARAMETERS "Bnu0" (initial Beta distribution sample size)
+#' @templateVar PARAMETERS "sigma0" (initial stdev of winning probabilities of all cards), "sigmaO" (observation noise), "sigmaE" (evolution noise), "w" (weight between Kalma filter and default model)
 #' @templateVar LENGTH_DATA_COLUMNS 4
 #' @templateVar DETAILS_DATA_1 \item{"subjID"}{ A unique identifier for each subject in the data-set.}
 #' @templateVar DETAILS_DATA_2 \item{"cue"}{ First card shown: 1, 2, 3, 4, 5, 6, 7, 8, 9 }
@@ -15,15 +16,23 @@
 #'
 #' @export
 #' @include hBayesDM_model.R
+#'
+#' @references
+#' Daw, N. D., O'Doherty, J. P., Dayan, P., Seymour, B., & Dolan, R. J. (2006). Cortical substrates
+#'   for exploratory decisions in humans. Nature, 441(7095), 876-879.
 
-riggedDeck_beta <- hBayesDM_model(
+riggedDeck_kalmanfW <- hBayesDM_model(
   task_name       = "riggedDeck",
-  model_name      = "beta", 
+  model_name      = "kalmanfW", 
   data_columns    = c("subjid", "cue", "choice", "outcome"),
-  parameters      = list("Bnu0" = c(0, 10, inf),
-                         "sw"   = c(0, 0.5, 1)),
-  regressors      = list("beta_mean"     = 2,
-                         "beta_samsiz"   = 2),
+  parameters      = list("sigma0" = c(0, 1, inf),
+                         "sigmaO" = c(0, 1, inf),
+                         "sigmaE" = c(0, 1, inf),
+			 "w"      = c(0, .5, inf)),
+  regressors      = list("winp_mean" = 2,
+                         "winp_var"  = 2,
+                         "gain"      = 2,
+                         "rpe"       = 2),
   preprocess_func = function(raw_data, general_info) {
     subjs   <- general_info$subjs
     n_subj  <- general_info$n_subj

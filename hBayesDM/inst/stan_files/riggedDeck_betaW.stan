@@ -51,7 +51,7 @@ model {
   // ======= BAYESIAN PRIORS ======= //
   // group level hyperparameters
   mu_nc ~ normal(0,1);
-  sd_nc ~ normal(0,1); //cauchy(0,1); // student_t(4,0,1); 
+  sd_nc ~ normal(0,1); // student_t(4,0,1); 
                        //cauchy(0,1);   // why half-Cauchy: Ahn, Haynes, Zhang (2017). 
                        //From v0.6.0, cauchy(0,5) -> cauchy(0,1) 
 
@@ -115,7 +115,6 @@ generated quantities {
 
   real beta_mean[N, T];
   real beta_samsiz[N, T];
-  real weight_par[N, T];
   real weighted_mean[N, T];
 
   // For posterior predictive check
@@ -174,7 +173,6 @@ generated quantities {
         // Model regressors --> store values before being updated
         beta_mean[i, t] = Bmu[q];
         beta_samsiz[i, t] = Bnu[q];
-        weight_par[i, t] = sw[i];
         weighted_mean[i, t] = Bmw[q];
         // ------- END GQ ------- //
 
@@ -186,7 +184,6 @@ generated quantities {
 
         beta_mean[i, t] = Pwc0[q];
         beta_samsiz[i, t] = Bnu0[i];
-        weight_par[i, t] = sw[i];
         weighted_mean[i, t] = Pwc0[q];
       }
     }

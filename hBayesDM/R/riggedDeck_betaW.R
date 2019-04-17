@@ -1,10 +1,10 @@
-#' @templateVar MODEL_FUNCTION beta
+#' @templateVar MODEL_FUNCTION betaW
 #' @templateVar CONTRIBUTOR Mario Martinez-Saito
 #' @templateVar TASK_NAME Rigged card deck
-#' @templateVar MODEL_NAME Bayesian Beta learner  
+#' @templateVar MODEL_NAME Weighted Bayesian Beta learner  
 #' @templateVar MODEL_TYPE Hierarchical
 #' @templateVar DATA_COLUMNS "subjID", "cue", "choice", "outcome"
-#' @templateVar PARAMETERS "Bnu0" (initial Beta distribution sample size)
+#' @templateVar PARAMETERS "Bnu0" (initial Beta distribution sample size), "sw" (weight) 
 #' @templateVar LENGTH_DATA_COLUMNS 4
 #' @templateVar DETAILS_DATA_1 \item{"subjID"}{ A unique identifier for each subject in the data-set.}
 #' @templateVar DETAILS_DATA_2 \item{"cue"}{ First card shown: 1, 2, 3, 4, 5, 6, 7, 8, 9 }
@@ -16,14 +16,15 @@
 #' @export
 #' @include hBayesDM_model.R
 
-riggedDeck_beta <- hBayesDM_model(
+riggedDeck_betaW <- hBayesDM_model(
   task_name       = "riggedDeck",
-  model_name      = "beta", 
+  model_name      = "betaW", 
   data_columns    = c("subjid", "cue", "choice", "outcome"),
   parameters      = list("Bnu0" = c(0, 10, inf),
                          "sw"   = c(0, 0.5, 1)),
   regressors      = list("beta_mean"     = 2,
-                         "beta_samsiz"   = 2),
+                         "beta_samsiz"   = 2,
+                         "weighted_mean" = 2),
   preprocess_func = function(raw_data, general_info) {
     subjs   <- general_info$subjs
     n_subj  <- general_info$n_subj
