@@ -37,7 +37,7 @@
 #' Pleskac TJ & Busemeyer JR (2010) Two-Stage Dynamic Signal Detection: A Theory of Choice, Decision Time, and Confidence. Psychological Review 117:864-901
 
 
-choiceRT_ddm <- hBayesDM_model(
+choiceRT_2dsd <- hBayesDM_model(
   task_name       = "choiceRT",
   model_name      = "2dsd",
   data_columns    = c("subjID", "choice", "RT", "confidence", "CT"),
