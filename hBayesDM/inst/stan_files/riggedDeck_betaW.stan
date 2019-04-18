@@ -147,7 +147,10 @@ generated quantities {
     Balpha = Bmu .* Bnu;
     Bbeta = (1 - Bmu) .* Bnu;
 
-    log_lik[i] = 0;  // ------- GQ ------- 
+    // ------- GQ ------- //
+    log_lik[i] = 0;
+    y_pred[i, t] = bernoulli_rng(Bmu[q]); // generate posterior prediction for current trial
+    // ------- END GQ ------- //
 
     for (t in 1:(Tsubj[i])) {
       int q;
@@ -166,9 +169,6 @@ generated quantities {
          //log_lik[i] += beta_binomial_lpmf(choice[i, t] | Balpha[q], Bbeta[q]);
          //log_lik[i] += bernoulli_lpmf(choice[i,t] | Pwc0[q]);
         log_lik[i] += bernoulli_lpmf(choice[i,t] | Bmw[q]);
-
-        // generate posterior prediction for current trial
-        y_pred[i, t] = bernoulli_rng(Bmw[q]);
 
         // Model regressors --> store values before being updated
         beta_mean[i, t] = Bmu[q];

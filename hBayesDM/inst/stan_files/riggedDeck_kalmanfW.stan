@@ -143,7 +143,10 @@ generated quantities {
     mu_est  = Pwc0;
     var_est = rep_vector(sigma0[i]^2, 9);
 
-    log_lik[i] = 0;  // ------- GQ ------
+    // ------- GQ ------- //
+    log_lik[i] = 0;
+    y_pred[i, t] = bernoulli_rng(Bmu[q]); // generate posterior prediction for current trial
+    // ------- END GQ ------- //
 
     for (t in 1:(Tsubj[i])) {
       int q;
@@ -162,9 +165,6 @@ generated quantities {
         // ------- GQ ------- //
         // compute action probabilities
         log_lik[i] += bernoulli_lpmf(choice[i,t] | mu_est[q] * w[i] + Pwc0[q] * (1-w[i]) );
-
-        // generate posterior prediction for current trial
-        y_pred[i, t] = bernoulli_rng(mu_est[q] * w[i] + Pwc0[q] * (1-w[i]) );
 
         // Model regressors: stored values before being updated
         winp_mean[i, t] = mu_est[q];
