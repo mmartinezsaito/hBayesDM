@@ -175,7 +175,6 @@ generated quantities {
 
     // ------- GQ ------- //
     log_lik[i] = 0;
-    y_pred[i, t] = bernoulli_rng(Bmu[q]); // generate posterior prediction for current trial
     // ------- END GQ ------- //
 
     for (t in 1:(Tsubj[i])) {
@@ -201,6 +200,8 @@ generated quantities {
          //log_lik[i] += bernoulli_lpmf(choice[i,t] | Pwc0[q]);
         log_lik[i] += bernoulli_lpmf(choice[i,t] | Bmw[q]);
 
+        y_pred[i, t] = bernoulli_rng(Bmw[q]); // generate posterior prediction for current trial
+
         // Model regressors --> store values before being updated
         beta_mean[i, t] = Bmu[q];
         beta_samsiz[i, t] = Bnu[q];
@@ -214,6 +215,7 @@ generated quantities {
 
       } else {
 
+        y_pred[i, t] = bernoulli_rng(Pwc0[q]); // generate posterior prediction for current trial
         beta_mean[i, t] = Pwc0[q];
         beta_samsiz[i, t] = Bnu0[i];
         weight_par[i, t] = sw;

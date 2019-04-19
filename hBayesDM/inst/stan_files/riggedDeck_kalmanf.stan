@@ -135,12 +135,15 @@ generated quantities {
 
     // ------- GQ ------- //
     log_lik[i] = 0;
-    y_pred[i, t] = bernoulli_rng(Bmu[q]); // generate posterior prediction for current trial
     // ------- END GQ ------- //
 
     for (t in 1:(Tsubj[i])) {
       int q;
       q = cue[i, t];
+
+      // ------- GQ ------- //
+      y_pred[i, t] = bernoulli_rng(mu_est[q]); // generate posterior prediction for current trial
+      // ------- END GQ ------- //
 
       // --- Update --- //
       // prediction error: innovation (pre-fit residual) measurement
